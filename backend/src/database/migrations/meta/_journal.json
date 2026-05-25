@@ -8,6 +8,13 @@
       "when": 1779696455741,
       "tag": "0000_special_magma",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779701510178,
+      "tag": "0001_steep_hellion",
+      "breakpoints": true
     }
   ]
 }

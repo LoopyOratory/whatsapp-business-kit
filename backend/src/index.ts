@@ -1,12 +1,21 @@
 import { Elysia } from 'elysia'
 import { app } from './app'
-import { env } from './config/env'
 import { sharedErrors } from './shared/errors'
+import { getEnv } from './config/validate'
+import { logger } from './lib/logger'
 
-const server = new Elysia()
-  .use(sharedErrors)
-  .use(app)
-  .listen(env.port)
-
-console.log(`🦊 Server running at http://localhost:${env.port}`)
-export type Server = typeof server
+try {
+  const env = getEnv()
+  logger.info({ port: env.port, nodeEnv: env.NODE_ENV }, 'Starting server')
+  
+  const server = new Elysia()
+    .use(sharedErrors)
+    .use(app)
+    .listen(env.port)
+  
+  logger.info(`🦊 Server running at http://localhost:${env.port}`)
+} catch (err: any) {
+  logger.error(err, 'Failed to start server')
+  console.error(err.message)
+  process.exit(1)
+}

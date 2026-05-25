@@ -1,4 +1,8 @@
-import { pgTable, uuid, text, timestamp, numeric, integer, boolean, jsonb } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, text, timestamp, numeric, integer, boolean, jsonb, pgEnum } from 'drizzle-orm/pg-core'
+
+// Enums
+export const userRoleEnum = pgEnum('user_role', ['owner', 'admin', 'staff'])
+export const subscriptionTierEnum = pgEnum('subscription_tier', ['free', 'starter', 'growth', 'business'])
 
 export const businesses = pgTable('businesses', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -9,8 +13,30 @@ export const businesses = pgTable('businesses', {
   address: text('address'),
   currency: text('currency').default('GHS'),
   settings: jsonb('settings').default('{}'),
+  subscriptionTier: subscriptionTierEnum('subscription_tier').default('free').notNull(),
+  subscriptionStatus: text('subscription_status').default('active'),
+  subscriptionExpiresAt: timestamp('subscription_expires_at'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+export const pricingTiers = pgTable('pricing_tiers', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  tier: subscriptionTierEnum('tier').unique().notNull(),
+  name: text('name').notNull(),
+  priceGhs: numeric('price_ghs').notNull(),
+  priceUsd: numeric('price_usd').notNull(),
+  maxUsers: integer('max_users').notNull(),
+  maxProducts: integer('max_products').notNull(),
+  maxMessages: integer('max_messages').notNull(),
+  maxBroadcasts: integer('max_broadcasts').notNull(),
+  broadcastsEnabled: boolean('broadcasts_enabled').default(false),
+  analyticsEnabled: boolean('analytics_enabled').default(false),
+  prioritySupport: boolean('priority_support').default(false),
+  apiAccess: boolean('api_access').default(false),
+  customBranding: boolean('custom_branding').default(false),
+  description: text('description'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 })
 
 export const users = pgTable('users', {
@@ -18,7 +44,7 @@ export const users = pgTable('users', {
   businessId: uuid('business_id').references(() => businesses.id, { onDelete: 'cascade' }),
   email: text('email').notNull().unique(),
   name: text('name').notNull(),
-  role: text('role').default('staff'),
+  role: userRoleEnum('role').default('staff').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })
 
@@ -119,6 +145,7 @@ export const paymentTransactions = pgTable('payment_transactions', {
 
 export const table = {
   businesses,
+  pricingTiers,
   users,
   catalogItems,
   customers,
