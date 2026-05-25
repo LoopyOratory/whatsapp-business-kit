@@ -42,3 +42,9 @@ export const businessesModule = new Elysia({ name: 'businesses-module', prefix: 
     const business = await BusinessService.create(body as any)
     return business
   }, { body: CreateBusinessDto })
+  .put('/settings', async ({ user, body }) => {
+    if (!user?.id) return status(401)
+    const updated = await BusinessService.update(user.id, { settings: body } as any)
+    if (!updated) return status(404)
+    return updated
+  }, { auth: true, body: t.Record(t.String(), t.Any()) })

@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
+import { swagger } from '@elysiajs/swagger'
 import { betterAuthPlugin } from './plugins/auth'
 import { businessesModule } from './modules/businesses'
 import { catalogModule } from './modules/catalog'
@@ -14,6 +15,12 @@ import { whatsappModule } from './modules/whatsapp'
 config()
 
 export const app = new Elysia()
+  .use(swagger({
+    path: '/docs',
+    documentation: {
+      info: { title: 'WhatsApp Business Kit API', version: '1.0.0', description: 'API for managing WhatsApp-based business operations' },
+    },
+  }))
   .use(cors({
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     credentials: true,

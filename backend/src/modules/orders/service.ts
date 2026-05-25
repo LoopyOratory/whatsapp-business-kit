@@ -1,6 +1,6 @@
 import { db } from '../../database'
 import { orders, orderItems, customers, catalogItems } from '../../database/schema'
-import { eq, and, sql } from 'drizzle-orm'
+import { eq, and, sql, desc } from 'drizzle-orm'
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm'
 
 export abstract class OrderService {
