@@ -1,12 +1,15 @@
 import { Elysia, t } from 'elysia'
 import { betterAuth } from 'better-auth'
-import { Pool } from 'pg'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { db } from '../database'
+import * as schema from '../database/schema'
 import { env } from '../config/env'
 
 const auth = betterAuth({
-  database: new Pool({ connectionString: env.databaseUrl }),
+  database: drizzleAdapter(db, { provider: 'pg', schema }),
   secret: env.betterAuthSecret,
   baseURL: env.betterAuthUrl,
+  emailAndPassword: { enabled: true },
 })
 
 export const betterAuthPlugin = new Elysia({ name: 'better-auth' })
