@@ -3,6 +3,9 @@ import { app } from './app'
 import { sharedErrors } from './shared/errors'
 import { getEnv } from './config/validate'
 import { logger } from './lib/logger'
+import { initSentry } from './lib/sentry'
+
+initSentry()
 
 try {
   const env = getEnv()

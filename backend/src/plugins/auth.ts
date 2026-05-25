@@ -10,6 +10,12 @@ const auth = betterAuth({
   secret: env.betterAuthSecret,
   baseURL: env.betterAuthUrl,
   emailAndPassword: { enabled: true },
+  emailVerification: {
+    enabled: true,
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+  },
+  resetPassword: { enabled: true },
 })
 
 export const betterAuthPlugin = new Elysia({ name: 'better-auth' })
