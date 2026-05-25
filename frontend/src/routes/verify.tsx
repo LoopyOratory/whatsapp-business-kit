@@ -1,20 +1,27 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router"
+import { z } from "zod"
 import { useEffect, useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, CheckCircle2, XCircle } from "lucide-react"
 
-export const Route = createFileRoute("/verify")({ component: VerifyPage })
+const verifySearchSchema = z.object({
+  token: z.string().optional(),
+})
+
+export const Route = createFileRoute("/verify")({
+  validateSearch: verifySearchSchema,
+  component: VerifyPage,
+})
 
 function VerifyPage() {
   const navigate = useNavigate()
+  const { token } = useSearch({ from: Route.id })
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading")
   const [message, setMessage] = useState("Verifying your email...")
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const token = params.get("token")
 
     if (!token) {
       setStatus("error")
