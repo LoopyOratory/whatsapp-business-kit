@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhatsappRouteImport } from './routes/whatsapp'
+import { Route as VerifyRouteImport } from './routes/verify'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -29,6 +31,11 @@ const WhatsappRoute = WhatsappRouteImport.update({
   path: '/whatsapp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyRoute = VerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -42,6 +49,11 @@ const SignupRoute = SignupRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -106,9 +118,11 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/orders': typeof OrdersRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/verify': typeof VerifyRoute
   '/whatsapp': typeof WhatsappRoute
 }
 export interface FileRoutesByTo {
@@ -122,9 +136,11 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/orders': typeof OrdersRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/verify': typeof VerifyRoute
   '/whatsapp': typeof WhatsappRoute
 }
 export interface FileRoutesById {
@@ -139,9 +155,11 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/orders': typeof OrdersRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/verify': typeof VerifyRoute
   '/whatsapp': typeof WhatsappRoute
 }
 export interface FileRouteTypes {
@@ -157,9 +175,11 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/orders'
     | '/privacy'
+    | '/reset-password'
     | '/settings'
     | '/signup'
     | '/terms'
+    | '/verify'
     | '/whatsapp'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -173,9 +193,11 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/orders'
     | '/privacy'
+    | '/reset-password'
     | '/settings'
     | '/signup'
     | '/terms'
+    | '/verify'
     | '/whatsapp'
   id:
     | '__root__'
@@ -189,9 +211,11 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/orders'
     | '/privacy'
+    | '/reset-password'
     | '/settings'
     | '/signup'
     | '/terms'
+    | '/verify'
     | '/whatsapp'
   fileRoutesById: FileRoutesById
 }
@@ -206,9 +230,11 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   OrdersRoute: typeof OrdersRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
+  VerifyRoute: typeof VerifyRoute
   WhatsappRoute: typeof WhatsappRoute
 }
 
@@ -219,6 +245,13 @@ declare module '@tanstack/react-router' {
       path: '/whatsapp'
       fullPath: '/whatsapp'
       preLoaderRoute: typeof WhatsappRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify': {
+      id: '/verify'
+      path: '/verify'
+      fullPath: '/verify'
+      preLoaderRoute: typeof VerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -240,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -326,9 +366,11 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   OrdersRoute: OrdersRoute,
   PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
+  VerifyRoute: VerifyRoute,
   WhatsappRoute: WhatsappRoute,
 }
 export const routeTree = rootRouteImport

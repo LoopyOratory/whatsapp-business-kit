@@ -26,7 +26,7 @@ function SignupPage() {
       if (signUpError) {
         setError(signUpError.message || "Registration failed")
       } else {
-        navigate({ to: "/dashboard" })
+        navigate({ to: "/onboarding" })
       }
     } catch (err: any) {
       setError(err.message || "Something went wrong")

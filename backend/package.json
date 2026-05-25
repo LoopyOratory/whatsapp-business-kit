@@ -26,6 +26,7 @@
   },
   "scripts": {
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit push"
+    "migrate": "drizzle-kit push",
+    "test": "bun test"
   }
 }

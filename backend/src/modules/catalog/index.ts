@@ -4,6 +4,7 @@ import { catalogItems, businesses } from '../../database/schema'
 import { eq, and } from 'drizzle-orm'
 import { CreateCatalogItemDto, UpdateCatalogItemDto, CatalogItemDto } from './model'
 import { CatalogService } from './service'
+import { checkProductLimit } from '../../lib/subscription'
 
 export const catalogModule = new Elysia({ name: 'catalog-module', prefix: '/api/catalog' })
   .get('/', async ({ user, query }) => {
@@ -23,6 +24,11 @@ export const catalogModule = new Elysia({ name: 'catalog-module', prefix: '/api/
     if (!user?.id) return status(401)
     const business = await db.select().from(businesses).where(eq(businesses.id, user.id)).limit(1)
     if (!business[0]) return status(404)
+    
+    const limitResult = await checkProductLimit(user.id)
+    if (!limitResult.allowed) {
+      return status(403, { error: `Product limit reached (${limitResult.current}/${limitResult.limit}). Upgrade your plan.` })
+    }
     
     const item = await CatalogService.create({ ...body, businessId: user.id })
     return item

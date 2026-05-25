@@ -109,8 +109,8 @@ function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-gray-500 md:flex-row">
           <span>WhatsApp Business Kit &mdash; Built for Ghanaian SMEs</span>
           <div className="flex gap-6">
-            <span>Privacy</span>
-            <span>Terms</span>
+            <Link to="/privacy" className="hover:text-gray-700 dark:hover:text-gray-300">Privacy</Link>
+            <Link to="/terms" className="hover:text-gray-700 dark:hover:text-gray-300">Terms</Link>
             <span>Contact</span>
           </div>
         </div>

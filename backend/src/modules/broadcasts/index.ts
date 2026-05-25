@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm'
 import { businesses } from '../../database/schema'
 import { CreateBroadcastDto } from './model'
 import { BroadcastService } from './service'
+import { getBusinessTier } from '../../lib/subscription'
 
 export const broadcastsModule = new Elysia({ name: 'broadcasts-module', prefix: '/api/broadcasts' })
   .get('/', async ({ user, query }) => {
@@ -17,6 +18,10 @@ export const broadcastsModule = new Elysia({ name: 'broadcasts-module', prefix: 
   }, { auth: true })
   .post('/', async ({ user, body }) => {
     if (!user?.id) return status(401)
+    const tier = await getBusinessTier(user.id)
+    if (!tier || !tier.broadcastsEnabled) {
+      return status(403, { error: 'Broadcasts not available on your plan. Upgrade to Starter or higher.' })
+    }
     const broadcast = await BroadcastService.create({ ...body, businessId: user.id })
     return broadcast
   }, { auth: true, body: CreateBroadcastDto })
