@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - run: bun build src/index.ts
+      - run: bun build src/index.ts --target bun
 
   build-frontend:
     runs-on: ubuntu-latest
