@@ -57,24 +57,20 @@ export abstract class WhatsAppService {
   }
 
   static async handleWebhook(payload: any) {
-    const { from, text, messageId, timestamp } = payload
+    const { from: fromPhone, text, messageId, timestamp } = payload
 
-    // Find or create customer by phone
+    // Try to find customer by phone - webhook comes from WAHA without business context
     let customer = await db
       .select()
       .from(customers)
-      .where(eq(customers.phone, from))
+      .where(eq(customers.phone, fromPhone))
       .limit(1)
       .then(r => r[0])
 
     if (!customer) {
-      customer = (await db
-        .insert(customers)
-        .values({
-          phone: from,
-          name: from,
-        })
-        .returning())[0]
+      // Can't create customer without businessId from webhook context
+      // Just log the message without a customer association
+      return { received: true, customerId: null }
     }
 
     // Log the incoming message
